@@ -2,7 +2,7 @@
 require('dotenv').config()
 const express = require('express');
 const server = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3030;
 
 server.use(express.static('./public'));
 
@@ -13,6 +13,10 @@ server.set('view engine','ejs');
 
 server.get('/hello',(req,res)=>{
     res.render('./pages/index.ejs');
+});
+
+server.get('/searches/show',(req,res)=>{
+res.render('./pages/searches/show.ejs');
 })
 
 server.listen(PORT,() =>{
