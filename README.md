@@ -23,3 +23,5 @@ book_app (repository)
 ├── README.md
 └── server.js
 
+*  `/hello`for testing 
+* `/searches/show` for rendering shhow.ejs
