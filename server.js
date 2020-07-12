@@ -11,6 +11,9 @@ server.use(express.urlencoded({extended:true}));
 
 server.set('view engine','ejs');
 
+server.get('/hello',(req,res)=>{
+    res.render('./pages/index.ejs');
+})
 
 server.listen(PORT,() =>{
 console.log(`listening to port : ${PORT}`);
