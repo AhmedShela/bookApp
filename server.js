@@ -15,9 +15,9 @@ server.get('/hello',(req,res)=>{
     res.render('./pages/index.ejs');
 });
 
-server.get('/searches/show',(req,res)=>{
-res.render('./pages/searches/show.ejs');
-});
+// server.get('/searches/show',(req,res)=>{
+// res.render('./pages/searches/show.ejs');
+// });
 
 // server.get('/searches',(req,res)=>{
 //     let url = `https://www.googleapis.com/books/v1/volumes?q=dogs`;
@@ -63,9 +63,9 @@ function Book(data) {
     this.bookDesc = data.volumeInfo.description,
     this.bookImage = ((data.volumeInfo.imageLinks.thumbnail) ? data.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg')
 }
-server.post('/searches',(req,res)=>{
-
-});
+server.get('',(req,res)=>{
+    
+})
 server.listen(PORT,() =>{
 console.log(`listening to port : ${PORT}`);
 });
