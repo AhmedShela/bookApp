@@ -54,7 +54,7 @@ header nav{
     margin: 0px 16px;
     margin-top: 10px;
 }
-button{
+#btnSearch{
     width: 150px;
     height: 50px;
     align-self: center;
@@ -71,5 +71,35 @@ button{
     flex-wrap: wrap;
     justify-content: center;
     align-content: space-between;
+}
+/**********************************************/
+.btnSelect{
+    display: block;
+    width: 30%;
+    align-self: center;
+    height: 40px;
+}
+.catigoryText{
+}
+.urlText{
+    display: none;
+}
+.btnSave{
+display: none;
+}
+.bookDtl{
+    margin: 5px;
+    height: 30px;
+    width: 75%;
+}
+.bookDtlForm input{
+    display: none;
+}
+.bookDtlForm{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-evenly;
 }
 }

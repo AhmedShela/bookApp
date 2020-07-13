@@ -18,6 +18,17 @@
             </nav>
         </header>
         <h1>Hi i am index.ejs</h1>
-
+        <main>
+            <div id="mainWraper">
+                <% booksResult.forEach (book => {  %>
+                    <section class="bookSec">
+                        <img class="bookCover" src="<%= book.bookimage %>" alt="">
+                        <h2 class="bookTitle"><%= book.bookname %></h2>
+                        <p class="bookAuthor"><%= book.bookauthor %></p>
+                        <textarea class="desc"><%= book.bookdesc %></textarea>
+                    </section>
+                <% }) %>
+            </div>
+    </main>
     </body>
 </html>

@@ -4,6 +4,8 @@ const express = require('express');
 const server = express();
 const PORT = process.env.PORT || 3030;
 const agent = require('superagent')
+const pg = require('pg')
+const client = new pg.Client(process.env.DB_CONNECTION)
 
 server.use(express.static('./public'));
 server.use(express.json());
@@ -11,9 +13,13 @@ server.use(express.urlencoded({extended:true}));
 
 server.set('view engine','ejs');
 
-server.get('/',(req,res)=>{
-    res.render('./pages/index.ejs');
-});
+server.get('/',getAllBooks);
+
+function getAllBooks(req,res){
+let sql = 'SELECT * FROM BOOK_LIST;';
+client.query(sql).then((result)=>{
+        res.render('./pages/index.ejs',{booksResult: result.rows});
+});};
 
 server.post('/searches',(req,res)=>{
     var searchKey = req.body.bookSearch;
@@ -39,6 +45,16 @@ server.get('/search/new',(req,res)=>{
     res.render('./pages/searches/new.ejs')
 });
 
+server.post('/book',saveBook);
+function saveBook(req,res){
+    let {bookname,bookauthor,bookdesc,bookimage,bookcat} = req.body;
+    console.log(req.body);
+let safeValues = [bookname,bookauthor,bookdesc,bookimage,bookcat];
+let qery = 'INSERT INTO BOOK_LIST (bookName,bookAuthor,bookDesc,bookImage,bookCat) VALUES($1,$2,$3,$4,$5);';
+client.query(qery,safeValues).then(()=>{
+    res.redirect('/');
+})
+};
 function Book(data) {
     this.bookName = data.volumeInfo.title,
     this.bookAuthor = ((data.volumeInfo.authors) ? data.volumeInfo.authors[0] : 'unKnown')//data.volumeInfo.authors[0],
@@ -49,6 +65,8 @@ function Book(data) {
 server.get('/*',(req,res)=>{
     res.render('pages/error.ejs')
 });
-server.listen(PORT,() =>{
-console.log(`listening to port : ${PORT}`);
+client.connect().then(()=>{
+    server.listen(PORT,() =>{
+        console.log(`listening to port : ${PORT}`);
+});
 });
