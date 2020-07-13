@@ -4,7 +4,8 @@ const express = require('express');
 const server = express();
 const PORT = process.env.PORT || 3030;
 const agent = require('superagent')
-const pg = require('pg')
+const pg = require('pg');
+const { query } = require('express');
 const client = new pg.Client(process.env.DB_CONNECTION)
 
 server.use(express.static('./public'));
@@ -53,8 +54,18 @@ let safeValues = [bookname,bookauthor,bookdesc,bookimage,bookcat];
 let qery = 'INSERT INTO BOOK_LIST (bookName,bookAuthor,bookDesc,bookImage,bookCat) VALUES($1,$2,$3,$4,$5);';
 client.query(qery,safeValues).then(()=>{
     res.redirect('/');
-})
+});
 };
+
+server.get('/book/:book_id',getBookDTL);
+function getBookDTL(req,res) {
+    // console.log(req.params.book_id);
+    let sqlQ = `select * from book_list where id =${req.params.book_id};`;
+    client.query(sqlQ).then(result =>{
+        console.log(result);
+        res.render('./pages/books/details.ejs',{bookDetails: result.rows[0]})
+    })
+}
 function Book(data) {
     this.bookName = data.volumeInfo.title,
     this.bookAuthor = ((data.volumeInfo.authors) ? data.volumeInfo.authors[0] : 'unKnown')//data.volumeInfo.authors[0],
