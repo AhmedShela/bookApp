@@ -36,6 +36,21 @@
                 <p class="bookAuthor"><%= bookDetails.bookauthor %></p>
                 <p class="bookAuthor"><%= bookDetails.bookcat %></p>
                 <textarea class="desc"><%= bookDetails.bookdesc %></textarea>
+            <form class="bookDtlForm" action="/update/<%= bookDetails.id %>?_method=put" method="post">
+                <input type="text" name="bookimage" class="bookDtl" value="<%= bookDetails.bookimage %>" class="urlText">
+                <input type="text" name="bookname" class="bookDtl" value="<%= bookDetails.bookname %>">
+                <input type="text" name="bookauthor" class="bookDtl" value="<%= bookDetails.bookauthor %>">
+                <input type="text" name="bookdesc" class="bookDtl" value="<%= bookDetails.bookdesc %>">
+                <input type="text" name="bookcat" class="bookDtl" value="<%= bookDetails.bookcat %>" class="catigoryText">
+                <button class="btnSave" type="submit">Save</button>
+                <button class="btnSelect">Edit</button>
+                <!-- <button type="submit">Edit</button> -->
+                <!-- <a href="/del/<%= bookDetails.id %>">Delete</a> -->
+                  <!-- <a href="/test">test</a> -->
+                </form>
+                <form action="/delete/<%= bookDetails.id %>?_method=delete" method="post">
+                    <button type="submit">Delete</button>
+                </form>
             </section>
         </main>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
