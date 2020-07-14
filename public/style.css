@@ -194,4 +194,7 @@ color: maroon;
     background-color: #95bbdc;
     border: none;
 }
+.bookSec a{
+    display: block;
+}
 }
