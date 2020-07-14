@@ -11,6 +11,8 @@ const client = new pg.Client(process.env.DB_CONNECTION)
 server.use(express.static('./public'));
 server.use(express.json());
 server.use(express.urlencoded({extended:true}));
+const methodOverride = require('method-override');
+server.use(methodOverride('_method'));
 
 server.set('view engine','ejs');
 
@@ -21,6 +23,7 @@ let sql = 'SELECT * FROM BOOK_LIST;';
 client.query(sql).then((result)=>{
         res.render('./pages/index.ejs',{booksResult: result.rows});
 });};
+
 
 server.post('/searches',(req,res)=>{
     var searchKey = req.body.bookSearch;
@@ -49,7 +52,7 @@ server.get('/search/new',(req,res)=>{
 server.post('/book',saveBook);
 function saveBook(req,res){
     let {bookname,bookauthor,bookdesc,bookimage,bookcat} = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 let safeValues = [bookname,bookauthor,bookdesc,bookimage,bookcat];
 let qery = 'INSERT INTO BOOK_LIST (bookName,bookAuthor,bookDesc,bookImage,bookCat) VALUES($1,$2,$3,$4,$5);';
 client.query(qery,safeValues).then(()=>{
@@ -62,7 +65,7 @@ function getBookDTL(req,res) {
     // console.log(req.params.book_id);
     let sqlQ = `select * from book_list where id =${req.params.book_id};`;
     client.query(sqlQ).then(result =>{
-        console.log(result);
+        // console.log(result);
         res.render('./pages/books/details.ejs',{bookDetails: result.rows[0]})
     })
 }
@@ -73,6 +76,27 @@ function Book(data) {
     this.bookImage = ((data.volumeInfo.imageLinks) ? data.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg')
 };
 
+server.put('/update/:book_id',updateBook)
+function updateBook(req,res) {
+    let {bookname,bookauthor,bookdesc,bookimage,bookcat} = req.body;
+    let sql = `UPDATE BOOK_LIST SET bookName=$1,bookAuthor=$2,bookDesc=$3,bookImage=$4,bookCat=$5 WHERE ID =$6;`;
+    let safeValues = [bookname,bookauthor,bookdesc,bookimage,bookcat,req.params.book_id];
+    client.query(sql,safeValues).then(()=>{
+        res.redirect('/');
+    })
+}
+server.delete('/delete/:book_id',deleteBook);
+function deleteBook(req,res) {
+    console.log('Deleted');
+    let value = [req.params.book_id];
+    let sql = 'DELETE FROM BOOK_LIST WHERE ID =$1;';
+    client.query(sql,value).then(()=>{
+        res.redirect('/');
+    })
+}
+server.delete('/test',(req,res)=>{
+    console.log('Hi this is tes');
+})
 server.get('/*',(req,res)=>{
     res.render('pages/error.ejs')
 });
