@@ -41,7 +41,7 @@ server.get('/*', (req, res) => {
 function getAllBooks(req, res) {
     let sql = 'SELECT * FROM BOOK_LIST;';
     client.query(sql).then((result) => {
-        res.render('./pages/index.ejs', {booksResult: result.rows});
+        res.render('pages/index', {booksResult: result.rows});
     });
 };
 
