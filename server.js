@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3030;
 const agent = require('superagent')
 const pg = require('pg');
 const {query} = require('express');
-const client = new pg.Client(process.env.DB_CONNECTION)
+const client = new pg.Client(process.env.DATABASE_URL)
 
 /********************** */
 server.use(express.static('./public'));
