@@ -1,13 +1,14 @@
 'use strict';
-require('dotenv').config()
-const express = require('express');
-const server = express();
-const PORT = process.env.PORT || 3030;
-const agent = require('superagent')
-const pg = require('pg');
-const {query} = require('express');
-const client = new pg.Client(process.env.DATABASE_URL)
+require('dotenv').config();
 
+const express = require('express');
+const cors = require('cors');
+const agent = require('superagent');
+const pgSQL = require('pg');
+const server = express();
+const client = new pgSQL.Client(process.env.DATABASE_URL)
+server.use(cors());
+const PORT = process.env.PORT || 3030;
 /********************** */
 server.use(express.static('./public'));
 server.use(express.json());
